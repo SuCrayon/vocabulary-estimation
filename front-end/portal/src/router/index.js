@@ -10,6 +10,16 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/main',
+      name: 'Main',
+      component: () => import('@/views/main/index')
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: () => import('@/views/test')
     }
   ]
 })

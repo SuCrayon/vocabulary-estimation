@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>vocabularyTest</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+    <!-- 主页样式 -->
+    <link rel='stylesheet'href='/css/style.css'>
+    <!-- 按钮样式 -->
+    <link rel='stylesheet' href='/css/bttn.min.css'>
+    <!-- 重置样式 -->
+    <link rel='stylesheet' href='/css/reset.css'>
+</head>
+<body>
+    <div id='main'>
+        <div class='wordtext'>
+            <div class='txt'>
+                <!-- 提示判断单词 -->
+                <p id='notices'>
+                    <span>Judge the following words</span>
+                </p>
+                <!-- 单词显示位置 -->
+                <div id='word'>
+                    <span id='vocabulary'>word</span>
+                </div>
+            </div>
+            <!-- 认识和不认识的按钮 -->
+            <div class='buttons'>
+                <button class='bttn-float bttn-md' id='know' type='submit'>know</button>
+                <button class='bttn-float bttn-md' id='unknow' type='submit'>unknow</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="index.js"></script>
+</html>
