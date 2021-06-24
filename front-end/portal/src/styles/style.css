@@ -1,0 +1,82 @@
+#main{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-image: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(158, 172, 255));
+}
+
+.wordtext{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+    height: 60%;
+    width: 25%;
+    margin: auto;
+
+    text-align: center;
+    background-image: linear-gradient(to bottom right, #e66465, #9198e5);
+    /*让边框变成圆角*/
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /*给边框添加阴影样式*/
+    box-shadow: 2px 4px 20px #000;
+}
+
+.buttons{
+    position: absolute;
+    top: 80%;
+    left: 0;   
+    right: 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.txt{
+    position: absolute;
+    top: 13%;
+    left: 0;   
+    right: 0;
+    color: white;
+    font-size:25px;
+}
+
+#word{
+    font-size:64px;
+    font-family: wordfont;
+    /* margin-top: 80px; */
+    word-break: break-word;
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    left: 45%;   
+    transform: translate(-45%, -45%);
+    
+    color: white;
+}
+
+#notices{
+    font-family: noticefont;
+}
+
+.buttons{
+    font-family: wordfont;
+}
+
+@font-face {
+    font-family: wordfont;
+    src: url(../font/ComicNeueAngular-BoldItalic.ttf);
+}
+
+@font-face {
+    font-family: noticefont;
+    src: url(../font/Merienda-Regular.ttf);
+}
+
+@font-face {
+    font-family: buttonfont;
+    src: url(../font/Goodlight-Light.otf);
+}
