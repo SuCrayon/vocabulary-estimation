@@ -7,9 +7,9 @@
           <p id="notices">
             <span>Judge the following words</span>
           </p>
-          <!-- 单词显示位置 -->
-          <div id="word">vocabulary</div>
         </div>
+        <!-- 单词显示位置 -->
+        <div id="word">vocabulary</div>
         <!-- 认识和不认识的按钮 -->
         <div class="buttons">
           <button class="bttn-float bttn-md" id="know" @click="know">

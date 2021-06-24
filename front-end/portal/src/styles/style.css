@@ -47,9 +47,15 @@
 #word{
     font-size:64px;
     font-family: wordfont;
-    margin-top: 80px;
-    max-width: 100%;
+    /* margin-top: 80px; */
     word-break: break-word;
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    left: 45%;   
+    transform: translate(-45%, -45%);
+    
+    color: white;
 }
 
 #notices{
