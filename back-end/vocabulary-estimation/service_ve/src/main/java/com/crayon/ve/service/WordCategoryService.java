@@ -1,7 +1,11 @@
 package com.crayon.ve.service;
 
+import com.crayon.ve.POJO.DTO.WordCategoryDTO;
+import com.crayon.ve.POJO.VO.WordCategoryForm;
 import com.crayon.ve.entity.WordCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface WordCategoryService extends IService<WordCategory> {
 
+    void save(WordCategoryForm wordCategoryForm);
+
+    void saveBatch(List<WordCategoryForm> wordCategoryFormList);
+
+    List<WordCategoryDTO> listWordCategoryDTO();
 }
