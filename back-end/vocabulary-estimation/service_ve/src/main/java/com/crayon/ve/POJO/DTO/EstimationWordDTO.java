@@ -1,4 +1,4 @@
-package com.crayon.ve.POJO.VO;
+package com.crayon.ve.POJO.DTO;
 
 
 import io.swagger.annotations.ApiModel;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Accessors(chain = true)
 @ApiModel(value = "EstimationWord对象", description = "估测单词")
-public class EstimationWord implements Serializable {
+public class EstimationWordDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "单词分类id")
@@ -25,12 +25,6 @@ public class EstimationWord implements Serializable {
     @ApiModelProperty(value = "词汇等级")
     private Integer level;
 
-    @ApiModelProperty(value = "单词分类描述")
-    private String wordCategoryDescription;
-
     @ApiModelProperty(value = "单词")
     private String word;
-
-    @ApiModelProperty(value = "单词描述")
-    private String wordDescription;
 }

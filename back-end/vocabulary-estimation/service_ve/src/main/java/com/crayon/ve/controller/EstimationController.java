@@ -1,6 +1,6 @@
 package com.crayon.ve.controller;
 
-import com.crayon.ve.POJO.VO.EstimationWord;
+import com.crayon.ve.POJO.DTO.EstimationWordDTO;
 import com.crayon.ve.entity.Response;
 import com.crayon.ve.service.WordService;
 import io.swagger.annotations.Api;
@@ -30,7 +30,9 @@ public class EstimationController {
 
     @GetMapping("/listEstimationWords")
     public Response listEstimationWords() {
-        List<EstimationWord> estimationWordList = wordService.listEstimationWords();
+        long start = System.currentTimeMillis();
+        List<EstimationWordDTO> estimationWordList = wordService.listEstimationWords();
+        System.out.println("耗时: " + (System.currentTimeMillis() - start));
         return Response.success().putItem("items", estimationWordList);
     }
 }

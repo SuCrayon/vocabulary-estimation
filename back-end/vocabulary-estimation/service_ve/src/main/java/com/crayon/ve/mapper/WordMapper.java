@@ -1,6 +1,7 @@
 package com.crayon.ve.mapper;
 
-import com.crayon.ve.POJO.VO.EstimationWord;
+import com.crayon.ve.POJO.DTO.EstimationWordDTO;
+import com.crayon.ve.POJO.DTO.WordDTO;
 import com.crayon.ve.entity.Word;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -16,6 +17,12 @@ import java.util.List;
  */
 public interface WordMapper extends BaseMapper<Word> {
     /**
+     * 查询所有单词
+     * @return
+     */
+    List<WordDTO> listWordDTO();
+
+    /**
      * 获取指定等级单词数量
      *
      * @param level
@@ -25,9 +32,10 @@ public interface WordMapper extends BaseMapper<Word> {
 
     /**
      * 获取指定等级的单词
+     *
      * @param level
      * @param count
      * @return
      */
-    List<EstimationWord> getEstimationWords(Integer level, Integer count);
+    List<EstimationWordDTO> getRandomEstimationWords(Integer level, Integer count);
 }

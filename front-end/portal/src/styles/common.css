@@ -1,0 +1,14 @@
+@font-face {
+    font-family: noticefont;
+    src: url(../font/Merienda-Regular.ttf);
+}
+
+@font-face {
+    font-family: wordfont;
+    src: url(../font/ComicNeueAngular-BoldItalic.ttf);
+}
+
+@font-face {
+    font-family: buttonfont;
+    src: url(../font/Goodlight-Light.otf);
+}

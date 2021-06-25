@@ -1,3 +1,9 @@
+/*
+ * @Author: Crayon
+ * @Date: 2021-06-23 11:48:16
+ * @Last Modified by: Crayon
+ * @LastEditTime: 2021-06-25 15:44:02
+ */
 'use strict'
 const utils = require('./utils')
 const webpack = require('webpack')
@@ -22,6 +28,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    disableHostCheck: true, // 关闭Host检测
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
@@ -85,8 +92,8 @@ module.exports = new Promise((resolve, reject) => {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
         onErrors: config.dev.notifyOnErrors
-        ? utils.createNotifierCallback()
-        : undefined
+          ? utils.createNotifierCallback()
+          : undefined
       }))
 
       resolve(devWebpackConfig)

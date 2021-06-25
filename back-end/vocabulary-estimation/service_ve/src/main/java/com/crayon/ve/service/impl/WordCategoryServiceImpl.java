@@ -44,10 +44,6 @@ public class WordCategoryServiceImpl extends ServiceImpl<WordCategoryMapper, Wor
 
     @Override
     public List<WordCategoryDTO> listWordCategoryDTO() {
-        return baseMapper
-                .selectList(null)
-                .stream()
-                .map(BeanConverter::wordCategory2WordCategoryDTO)
-                .collect(Collectors.toList());
+        return baseMapper.listWordCategoryDTO();
     }
 }

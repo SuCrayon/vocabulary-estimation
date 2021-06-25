@@ -35,11 +35,11 @@ public class Word implements Serializable {
     @ApiModelProperty(value = "单词分类id")
     private String wordCategoryId;
 
+    @ApiModelProperty(value = "单词等级")
+    private Integer level;
+
     @ApiModelProperty(value = "单词")
     private String word;
-
-    @ApiModelProperty(value = "单词描述")
-    private String description;
 
     @ApiModelProperty(value = "是否已删除，0：未删除，1：已删除")
     @TableField(value = "is_deleted")

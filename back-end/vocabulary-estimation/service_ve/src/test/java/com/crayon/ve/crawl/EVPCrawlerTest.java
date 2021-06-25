@@ -65,14 +65,15 @@ public class EVPCrawlerTest {
                 Elements elements = doc.select("#reportList tbody tr");
 
                 // for (int j = 0; j < elements.size(); j++) {
-                // 先各存1000用来测试
-                for (int j = 0; j < 1000; j++) {
+                // 先各存200用来测试
+                for (int j = 0; j < 200; j++) {
                     String word = elements.get(j).select("td:nth-child(1)").text();
                     if (word.length() < 32 && word.matches("([a-z]|[A-Z])+")) {
                         System.out.println(word);
                         wordService.save(
                                 new Word()
                                         .setWordCategoryId(wordCategory.getId())
+                                        .setLevel(i + 1)
                                         .setWord(word)
                         );
                     }

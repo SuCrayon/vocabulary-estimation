@@ -21,10 +21,10 @@ public class WordDTO implements Serializable {
     @ApiModelProperty(value = "单词分类id")
     private String wordCategoryId;
 
+    @ApiModelProperty(value = "词汇等级")
+    private Integer level;
+
     @ApiModelProperty(value = "单词")
     private String word;
-
-    @ApiModelProperty(value = "单词描述")
-    private String description;
 
 }

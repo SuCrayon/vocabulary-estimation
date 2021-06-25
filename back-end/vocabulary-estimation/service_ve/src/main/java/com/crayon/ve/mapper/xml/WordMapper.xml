@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crayon.ve.mapper.WordMapper">
+    <select id="listWordDTO" resultType="com.crayon.ve.POJO.DTO.WordDTO">
+        SELECT id, word_category_id, `level`, `word`
+        FROM word
+        WHERE is_deleted = 0;
+    </select>
     <select id="countLevelWords" parameterType="Integer" resultType="Long">
         SELECT COUNT(1) count
         FROM word_category
             INNER JOIN word
         ON word_category.`level` = #{level} AND word.word_category_id = word_category.id;
     </select>
-    <select id="getEstimationWords" parameterType="Integer" resultType="com.crayon.ve.POJO.VO.EstimationWord">
-        SELECT word_category.id          word_category_id,
-               word.id                   word_id,
-               word_category.`level`     `level`,
-               word_category.description word_category_description,
-               word.word                 word,
-               word.description          word_description
-        FROM word_category
-                 INNER JOIN word ON word_category.`level` = #{level} AND word.word_category_id = word_category.id
-        ORDER BY RAND() LIMIT 0, ${count};
+    <!--    <select id="getEstimationWords" parameterType="Integer" resultType="com.crayon.ve.POJO.DTO.EstimationWordDTO">-->
+    <!--        SELECT word_category.id          word_category_id,-->
+    <!--               word.id                   word_id,-->
+    <!--               word_category.`level`     `level`,-->
+    <!--               word_category.description word_category_description,-->
+    <!--               word.word                 word,-->
+    <!--               word.description          word_description-->
+    <!--        FROM word_category-->
+    <!--                 INNER JOIN word ON word_category.`level` = #{level} AND word.word_category_id = word_category.id-->
+    <!--        ORDER BY RAND() LIMIT 0, ${count};-->
+    <!--    </select>-->
+    <select id="getRandomEstimationWords" parameterType="Integer" resultType="com.crayon.ve.POJO.DTO.EstimationWordDTO">
+        SELECT word_category_id, id word_id, `level`, word
+        FROM word
+        WHERE `level` = #{level}
+          AND is_deleted = 0
+        ORDER BY RAND() LIMIT #{count}
     </select>
 </mapper>

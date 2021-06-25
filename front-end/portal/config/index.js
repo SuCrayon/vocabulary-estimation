@@ -1,3 +1,9 @@
+/*
+ * @Author: Crayon
+ * @Date: 2021-06-23 11:48:16
+ * @Last Modified by: Crayon
+ * @LastEditTime: 2021-06-25 15:43:27
+ */
 'use strict'
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
@@ -20,7 +26,6 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
     /**
      * Source Maps
      */

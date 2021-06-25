@@ -1,8 +1,7 @@
 package com.crayon.ve.service.impl;
 
 import com.crayon.ve.POJO.DTO.WordDTO;
-import com.crayon.ve.POJO.VO.EstimationWord;
-import com.crayon.ve.POJO.VO.WordCategoryForm;
+import com.crayon.ve.POJO.DTO.EstimationWordDTO;
 import com.crayon.ve.POJO.VO.WordForm;
 import com.crayon.ve.constant.Common;
 import com.crayon.ve.converter.BeanConverter;
@@ -11,7 +10,6 @@ import com.crayon.ve.mapper.WordMapper;
 import com.crayon.ve.service.WordCategoryService;
 import com.crayon.ve.service.WordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.crayon.ve.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,19 +34,13 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
 
     @Override
     public void save(WordForm wordForm) {
-//        if (wordCategoryService.getById(wordForm.getWordCategoryId()) == null) {
-//
-//        }
+        // TODO: 检查单词分类id
         baseMapper.insert(BeanConverter.wordForm2Word(wordForm));
     }
 
     @Override
     public List<WordDTO> listWordDTO() {
-        return baseMapper
-                .selectList(null)
-                .stream()
-                .map(BeanConverter::word2WordDTO)
-                .collect(Collectors.toList());
+        return baseMapper.listWordDTO();
     }
 
     @Transactional
@@ -68,10 +60,10 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
      * @return
      */
     @Override
-    public List<EstimationWord> listEstimationWords() {
-        List<EstimationWord> estimationWordList = new ArrayList<>(100);
+    public List<EstimationWordDTO> listEstimationWords() {
+        List<EstimationWordDTO> estimationWordList = new ArrayList<>(100);
         for (int i = 1; i <= 6; i++) {
-            List<EstimationWord> levelWordList = baseMapper.getEstimationWords(i, Common.ESTIMATE_WORD_NUMS[i - 1]);
+            List<EstimationWordDTO> levelWordList = baseMapper.getRandomEstimationWords(i, Common.ESTIMATE_WORD_NUMS[i - 1]);
             estimationWordList.addAll(levelWordList);
         }
         return estimationWordList;
