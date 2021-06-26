@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-23 11:48:16
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-24 23:43:10
+ * @LastEditTime: 2021-06-26 10:54:18
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -15,7 +15,7 @@ Router.prototype.push = function push(location) {
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -24,12 +24,19 @@ export default new Router({
     {
       path: '/estimation',
       name: 'Estimation',
-      component: () => import(/* webpackChunkName:'estimation'*/'@/views/estimation/index')
+      component: (resolve) => require([/* webpackChunkName:'estimation'*/'@/views/pc/estimation/index'], resolve)
     },
     {
       path: '/result',
       name: 'Result',
-      component: () => import(/* webpackChunkName:'result'*/'@/views/result/index')
+      component: (resolve) => require([/* webpackChunkName:'result'*/'@/views/pc/result/index'], resolve)
+    },
+    {
+      path: '/m_estimation',
+      name: 'M_Estimation',
+      component: (resolve) => require([/* webpackChunkName:'m_estimation'*/'@/views/mobile/estimation/index'], resolve)
     }
   ]
 })
+
+export default router

@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-23 14:21:37
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-24 23:02:49
+ * @LastEditTime: 2021-06-26 23:11:47
  */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
@@ -10,6 +10,7 @@ import { MessageBox, Message } from 'element-ui'
 // create an axios instance
 const service = axios.create({
   baseURL: "http://localhost:28000", // url = base url + request url
+  // baseURL: "/", // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })

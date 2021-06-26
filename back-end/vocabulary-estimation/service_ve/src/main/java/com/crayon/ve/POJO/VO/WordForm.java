@@ -21,7 +21,7 @@ public class WordForm implements Serializable {
     @ApiModelProperty(value = "单词")
     private String word;
 
-    @ApiModelProperty(value = "单词描述")
-    private String description;
+    @ApiModelProperty(value = "中文意思")
+    private String chMeaning;
 
 }

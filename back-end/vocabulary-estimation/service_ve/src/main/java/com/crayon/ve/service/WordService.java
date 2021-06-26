@@ -1,7 +1,7 @@
 package com.crayon.ve.service;
 
 import com.crayon.ve.POJO.DTO.WordDTO;
-import com.crayon.ve.POJO.DTO.EstimationWordDTO;
+import com.crayon.ve.POJO.VO.VocabularyEstimationVO;
 import com.crayon.ve.POJO.VO.WordForm;
 import com.crayon.ve.entity.Word;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -24,5 +24,5 @@ public interface WordService extends IService<Word> {
 
     void saveBatch(List<WordForm> wordFormList);
 
-    List<EstimationWordDTO> listEstimationWords();
+    VocabularyEstimationVO listEstimationWords();
 }

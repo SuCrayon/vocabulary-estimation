@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-24 21:49:38
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-25 15:21:34
+ * @LastEditTime: 2021-06-26 10:29:41
 -->
 <template>
   <div id="app-container">
@@ -137,6 +137,6 @@ export default {
 </script>
 
 <style scoped>
-@import url("../../styles/bttn.min.css");
-@import url("../../styles/estimation.css");
+@import url("../../../styles/bttn.min.css");
+@import url("../../../styles/estimation.css");
 </style>

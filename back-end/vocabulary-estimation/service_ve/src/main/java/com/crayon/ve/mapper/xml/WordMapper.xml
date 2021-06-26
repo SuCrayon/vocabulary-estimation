@@ -24,7 +24,7 @@
     <!--        ORDER BY RAND() LIMIT 0, ${count};-->
     <!--    </select>-->
     <select id="getRandomEstimationWords" parameterType="Integer" resultType="com.crayon.ve.POJO.DTO.EstimationWordDTO">
-        SELECT word_category_id, id word_id, `level`, word
+        SELECT word_category_id, id , `level`, word, ch_meaning
         FROM word
         WHERE `level` = #{level}
           AND is_deleted = 0

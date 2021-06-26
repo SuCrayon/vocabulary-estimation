@@ -1,7 +1,8 @@
 package com.crayon.ve.service.impl;
 
-import com.crayon.ve.POJO.DTO.WordDTO;
 import com.crayon.ve.POJO.DTO.EstimationWordDTO;
+import com.crayon.ve.POJO.DTO.WordDTO;
+import com.crayon.ve.POJO.VO.VocabularyEstimationVO;
 import com.crayon.ve.POJO.VO.WordForm;
 import com.crayon.ve.constant.Common;
 import com.crayon.ve.converter.BeanConverter;
@@ -10,12 +11,12 @@ import com.crayon.ve.mapper.WordMapper;
 import com.crayon.ve.service.WordCategoryService;
 import com.crayon.ve.service.WordService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.crayon.ve.utils.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -52,20 +53,48 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
     }
 
     /**
+     * 生成随机的4个选项
+     *
+     * @param vocabularyEstimationVO
+     */
+    private void genAndSetOptions(VocabularyEstimationVO vocabularyEstimationVO) {
+        List<EstimationWordDTO> estimationWordList = vocabularyEstimationVO.getEstimationWordList();
+        for (int i = 0; i < estimationWordList.size(); i++) {
+            int[] optionIndexs = RandomUtils.get3OptionIndexs(i, estimationWordList.size());
+            List<String> options = new LinkedList<>();
+            for (int optionIndex : optionIndexs) {
+                options.add(estimationWordList.get(optionIndex).getChMeaning());
+            }
+            options.add(estimationWordList.get(i).getChMeaning());
+            // 选项打乱
+            Collections.shuffle(options);
+            estimationWordList.get(i).setOptions(options);
+        }
+    }
+
+    /**
      * 获取测验单词
      * 100个单词
      * 6个等级：1(A1) 2(A2) 3(B1) 4(B2) 5(C1) 6(C2)
      * 个数：10 15 25 25 15 10
+     * <p>
+     * 50个单词
+     * 5个等级：1 2 3 4 5
+     * 个数：5 10 15 10 10
      *
      * @return
      */
     @Override
-    public List<EstimationWordDTO> listEstimationWords() {
-        List<EstimationWordDTO> estimationWordList = new ArrayList<>(100);
-        for (int i = 1; i <= 6; i++) {
+    public VocabularyEstimationVO listEstimationWords() {
+        // 无需考虑容量问题
+        List<EstimationWordDTO> estimationWordList = new LinkedList<>();
+        for (int i = 1; i <= Common.ESTIMATE_LEVEL_NUM; i++) {
             List<EstimationWordDTO> levelWordList = baseMapper.getRandomEstimationWords(i, Common.ESTIMATE_WORD_NUMS[i - 1]);
             estimationWordList.addAll(levelWordList);
         }
-        return estimationWordList;
+        VocabularyEstimationVO vocabularyEstimationVO = new VocabularyEstimationVO();
+        vocabularyEstimationVO.setEstimationWordList(estimationWordList);
+        this.genAndSetOptions(vocabularyEstimationVO);
+        return vocabularyEstimationVO;
     }
 }

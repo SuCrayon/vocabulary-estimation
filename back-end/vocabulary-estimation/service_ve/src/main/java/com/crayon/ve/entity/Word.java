@@ -41,6 +41,9 @@ public class Word implements Serializable {
     @ApiModelProperty(value = "单词")
     private String word;
 
+    @ApiModelProperty(value = "中文意思")
+    private String chMeaning;
+
     @ApiModelProperty(value = "是否已删除，0：未删除，1：已删除")
     @TableField(value = "is_deleted")
     @TableLogic

@@ -27,4 +27,7 @@ public class WordDTO implements Serializable {
     @ApiModelProperty(value = "单词")
     private String word;
 
+    @ApiModelProperty(value = "中文意思")
+    private String chMeaning;
+
 }
