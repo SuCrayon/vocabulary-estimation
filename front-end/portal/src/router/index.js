@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-23 11:48:16
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-26 10:54:18
+ * @LastEditTime: 2021-06-27 20:51:05
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -35,6 +35,11 @@ const router = new Router({
       path: '/m_estimation',
       name: 'M_Estimation',
       component: (resolve) => require([/* webpackChunkName:'m_estimation'*/'@/views/mobile/estimation/index'], resolve)
+    },
+    {
+      path: '/m_result',
+      name: 'M_Result',
+      component: (resolve) => require([/* webpackChunkName:'m_estimation'*/'@/views/mobile/result/index'], resolve)
     }
   ]
 })

@@ -60,7 +60,7 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
     private void genAndSetOptions(VocabularyEstimationVO vocabularyEstimationVO) {
         List<EstimationWordDTO> estimationWordList = vocabularyEstimationVO.getEstimationWordList();
         for (int i = 0; i < estimationWordList.size(); i++) {
-            int[] optionIndexs = RandomUtils.get3OptionIndexs(i, estimationWordList.size());
+            int[] optionIndexs = RandomUtils.get3OptionIndexs(i ,estimationWordList.size(), estimationWordList);
             List<String> options = new LinkedList<>();
             for (int optionIndex : optionIndexs) {
                 options.add(estimationWordList.get(optionIndex).getChMeaning());

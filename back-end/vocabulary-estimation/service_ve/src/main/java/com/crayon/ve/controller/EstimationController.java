@@ -1,6 +1,5 @@
 package com.crayon.ve.controller;
 
-import com.crayon.ve.POJO.DTO.WordDTO;
 import com.crayon.ve.POJO.VO.VocabularyEstimationVO;
 import com.crayon.ve.entity.Response;
 import com.crayon.ve.service.WordService;

@@ -1,9 +1,8 @@
 package com.crayon.ve.utils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import com.crayon.ve.POJO.DTO.EstimationWordDTO;
+
+import java.util.*;
 
 public class RandomUtils {
 
@@ -13,16 +12,17 @@ public class RandomUtils {
      *
      * @param collision 正确答案的下标
      * @param bound     最大索引
+     * @param list
      * @return
      */
-    public static int[] get3OptionIndexs(int collision, int bound) {
+    public static int[] get3OptionIndexs(int collision, int bound, List<EstimationWordDTO> list) {
         int[] result = new int[3];
         Random random = new Random();
         Set<Integer> set = new HashSet<>();
         while (set.size() < 3) {
             int idx = random.nextInt(bound);
             // 重复或者是冲突
-            while (set.contains(idx) || idx == collision) {
+            while (set.contains(idx) || idx == collision || Objects.equals(list.get(idx).getChMeaning(), list.get(collision).getChMeaning())) {
                 idx = (idx + 1) % bound;
             }
             set.add(idx);

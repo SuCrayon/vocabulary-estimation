@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-26 10:21:06
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-26 23:10:56
+ * @LastEditTime: 2021-06-27 22:17:39
 -->
 <template>
   <div id="app-container">
@@ -36,25 +36,66 @@
         </el-header>
         <el-main>
           <div class="showing-word">
-            <span v-if="result === -1">{{ wordList[index].word }}</span>
-            <span v-else>Your vocabulary is {{ result }}</span>
+            <transition name="el-fade-in-linear">
+              <div v-if="optionSelect.length === 0">
+                <span>{{ wordList[index].word }}</span>
+              </div>
+            </transition>
           </div>
         </el-main>
         <el-footer :height="'auto'">
           <el-row :gutter="10" class="options">
-            <el-col
-              :span="12"
-              v-for="(option, idx) in wordList[index].options"
-              :key="idx"
-            >
-              <el-button plain @click="selectOption(option)">{{
-                option
-              }}</el-button>
-            </el-col>
+            <div v-if="optionSelect.length === 0">
+              <el-col
+                :span="12"
+                v-for="(option, idx) in wordList[index].options"
+                :key="idx"
+              >
+                <div class="option-btn" @click="selectOption(option)">
+                  <span>{{ option }}</span>
+                </div>
+              </el-col>
+            </div>
+            <div v-else>
+              <el-col
+                :span="12"
+                v-for="(option, idx) in optionCheckList"
+                :key="idx"
+              >
+                <div
+                  v-if="
+                    (optionSelect === option &&
+                      option === wordList[index - 1].chMeaning) ||
+                    (showAnswer === true &&
+                      option === wordList[index - 1].chMeaning)
+                  "
+                  class="option-btn"
+                  style="border-color: #67c23a"
+                >
+                  <i class="el-icon-circle-check" style="color: #67c23a"></i>
+                </div>
+                <div
+                  v-else-if="
+                    optionSelect === option &&
+                    option !== wordList[index - 1].chMeaning
+                  "
+                  class="option-btn"
+                  style="border-color: #f56c6c"
+                >
+                  <i class="el-icon-circle-close" style="color: #f56c6c"></i>
+                </div>
+                <div v-else class="option-btn">
+                  <i
+                    class="el-icon-remove-outline"
+                    style="visibility: hidden"
+                  ></i>
+                </div>
+              </el-col>
+            </div>
           </el-row>
-          <el-row>
+          <el-row :gutter="10">
             <el-col>
-              <el-button type="info" plain @click="dontKnow">不认识</el-button>
+              <div class="option-btn" @click="dontKnow">不认识</div>
             </el-col>
           </el-row>
         </el-footer>
@@ -64,12 +105,11 @@
 </template>
 
 <script>
-import Loading from "@/components/loading/index";
 import estimationApi from "@/api/estimation";
 export default {
   name: "M_Estimation",
   components: {
-    Loading,
+    Loading: () => import("@/components/Loading/index"),
   },
   data() {
     return {
@@ -79,19 +119,21 @@ export default {
       wordList: [],
       wordNums: [],
       levelRightCounts: [],
-      result: -1,
+      optionSelect: "",
+      optionCheckList: [],
     };
   },
   created() {
     this.getEstimationWords();
   },
   methods: {
-    dontKnow() {
+    nextWordOrCalc() {
       if (this.index < this.wordList.length - 1) {
         this.index++;
       } else {
         console.log(this.levelRightCounts);
-        const SCALE = 1000;
+        this.levelRightCounts.reverse();
+        const SCALE = 800;
         let result = 0;
         // 计算每一个级别答对的比率
         let rightRate = 0;
@@ -114,15 +156,33 @@ export default {
           result += SCALE * rightRate;
         }
         console.log("result: ", result);
-        this.result = parseInt(result);
+        result = parseInt(result);
+        this.$router.push({ name: "M_Result", params: { result } });
+      }
+    },
+    updateOptionSelect(option) {
+      this.optionSelect = option;
+      this.optionCheckList = this.wordList[this.index].options;
+      // 1秒后清空
+      const answerCheckTimer = setInterval(() => {
+        this.optionSelect = "";
+        this.optionCheckList = [];
+        clearInterval(answerCheckTimer);
+      }, 1000);
+    },
+    dontKnow() {
+      if (this.optionSelect !== "#") {
+        this.updateOptionSelect("#");
+        this.nextWordOrCalc();
       }
     },
     selectOption(option) {
+      this.updateOptionSelect(option);
       // 答对
       if (option === this.wordList[this.index].chMeaning) {
         this.levelRightCounts[this.wordList[this.index].level - 1]++;
       }
-      this.dontKnow();
+      this.nextWordOrCalc();
     },
     async getEstimationWords() {
       this.loading = true;
@@ -134,8 +194,11 @@ export default {
         })
         .catch((err) => console.log(err))
         .finally(() => {
-          // 1秒后加载完成
-          this.loading = false;
+          // 2秒后加载完成
+          const loadingTimer = setInterval(() => {
+            this.loading = false;
+            clearInterval(loadingTimer);
+          }, 2000);
         });
 
       // 初始化
@@ -146,23 +209,15 @@ export default {
 </script>
 
 <style scoped>
-.el-button:active {
-  border: 1px solid #dcdfe6 !important;
-  color: #606266 !important;
-}
 .container {
   height: 100vh;
-  /* background-image: linear-gradient(
-    to bottom right,
-    rgb(255, 255, 255),
-    rgb(158, 172, 255)
-  ); */
   background: url("~@/assets/background.png") center center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
+
 .el-container {
-  height: 100vh;
+  height: 100%;
 }
 
 .el-header {
@@ -177,21 +232,6 @@ export default {
 
 .el-footer {
   padding-bottom: 10px;
-}
-
-.el-footer .el-col {
-  /* height: 8vh;
-  max-height: 10vh; */
-}
-
-.el-footer .el-button {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* white-space: pre-wrap; */
-  /* word-wrap: break-word; */
-  font-size: 2vh;
 }
 
 .switch-label {
@@ -221,5 +261,22 @@ export default {
 
 .options .el-col {
   margin-bottom: 10px;
+}
+
+.option-btn {
+  width: 100%;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  border-radius: 4px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2vh;
+  padding: 12px 8px;
+  line-height: 1.4rem;
+  box-sizing: border-box;
 }
 </style>
