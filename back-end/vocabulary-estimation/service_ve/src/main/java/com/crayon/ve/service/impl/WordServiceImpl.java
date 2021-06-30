@@ -60,7 +60,7 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
     private void genAndSetOptions(VocabularyEstimationVO vocabularyEstimationVO) {
         List<EstimationWordDTO> estimationWordList = vocabularyEstimationVO.getEstimationWordList();
         for (int i = 0; i < estimationWordList.size(); i++) {
-            int[] optionIndexs = RandomUtils.get3OptionIndexs(i ,estimationWordList.size(), estimationWordList);
+            int[] optionIndexs = RandomUtils.get3OptionIndexs(i, estimationWordList.size(), estimationWordList);
             List<String> options = new LinkedList<>();
             for (int optionIndex : optionIndexs) {
                 options.add(estimationWordList.get(optionIndex).getChMeaning());
@@ -96,5 +96,34 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
         vocabularyEstimationVO.setEstimationWordList(estimationWordList);
         this.genAndSetOptions(vocabularyEstimationVO);
         return vocabularyEstimationVO;
+    }
+
+    /**
+     * 计算词汇量
+     *
+     * @param levelRightCounts 每个等级答对的题目数量
+     * @return
+     */
+    @Override
+    public int calculate(List<Integer> levelRightCounts) {
+        int result = 0;
+        double rightRate = 0;
+        for (int i = 0; i < Common.ESTIMATE_LEVEL_NUM; i++) {
+            rightRate = levelRightCounts.get(i) / (double) Common.ESTIMATE_WORD_NUMS[i];
+
+            if (i > 0) {
+                /*
+                    如果题目不属于第一级，则将上一级答对的比率和本级相乘
+                    然后用这个比率乘以固定的预估值作为该级别的预估次数
+                */
+                double lastRightRate = levelRightCounts.get(i - 1) / (double) Common.ESTIMATE_WORD_NUMS[i - 1];
+                if (lastRightRate == 0) {
+                    lastRightRate = 0.1;
+                }
+                rightRate *= lastRightRate;
+            }
+            result += Common.SCALE * rightRate;
+        }
+        return result;
     }
 }

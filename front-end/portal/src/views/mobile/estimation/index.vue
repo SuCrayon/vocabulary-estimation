@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-26 10:21:06
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-27 22:17:39
+ * @LastEditTime: 2021-06-30 18:37:46
 -->
 <template>
   <div id="app-container">
@@ -39,6 +39,10 @@
             <transition name="el-fade-in-linear">
               <div v-if="optionSelect.length === 0">
                 <span>{{ wordList[index].word }}</span>
+                <audio
+                  :src="`https://dict.youdao.com/dictvoice?audio=${wordList[index].word}&type=1`"
+                  autoplay
+                ></audio>
               </div>
             </transition>
           </div>
@@ -131,33 +135,18 @@ export default {
       if (this.index < this.wordList.length - 1) {
         this.index++;
       } else {
+        this.loading = true;
         console.log(this.levelRightCounts);
-        this.levelRightCounts.reverse();
-        const SCALE = 800;
-        let result = 0;
-        // 计算每一个级别答对的比率
-        let rightRate = 0;
-        for (let i = 0; i < this.wordNums.length; i++) {
-          rightRate = this.levelRightCounts[i] / this.wordNums[i];
-          if (i > 0) {
-            /* 
-            如果题目不属于第一级，则将上一级答对的比率和本级相乘
-            然后用这个比率乘以固定的预估值作为该级别的预估次数
-          */
-            let lastRightRate =
-              this.levelRightCounts[i - 1] / this.wordNums[i - 1];
-            if (lastRightRate === 0) {
-              lastRightRate = 0.1;
-            }
-            rightRate *= lastRightRate;
-          }
-          // 如果不是第一级，则将上一级答对的比率乘以预估值作为该级别的预估词数
-          console.log(`第${i + 1}级别: ${SCALE * rightRate}`);
-          result += SCALE * rightRate;
-        }
-        console.log("result: ", result);
-        result = parseInt(result);
-        this.$router.push({ name: "M_Result", params: { result } });
+        estimationApi
+          .calculate(this.levelRightCounts)
+          .then((resp) => {
+            let result = resp.data.result;
+            this.$router.push({ name: "M_Result", params: { result } });
+          })
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.loading = false;
+          });
       }
     },
     updateOptionSelect(option) {

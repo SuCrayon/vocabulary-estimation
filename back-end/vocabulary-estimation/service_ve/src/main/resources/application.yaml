@@ -1,5 +1,7 @@
 server:
   port: 28000
+  servlet:
+    context-path: /ve
 spring:
   application:
     name: service-ve

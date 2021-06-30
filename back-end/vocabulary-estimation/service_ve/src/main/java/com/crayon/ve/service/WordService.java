@@ -25,4 +25,6 @@ public interface WordService extends IService<Word> {
     void saveBatch(List<WordForm> wordFormList);
 
     VocabularyEstimationVO listEstimationWords();
+
+    int calculate(List<Integer> levelRightCounts);
 }

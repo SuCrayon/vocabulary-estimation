@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-26 15:06:14
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-27 21:53:44
+ * @LastEditTime: 2021-06-30 18:29:07
 -->
 <template>
   <div id="app-container">
@@ -15,6 +15,10 @@
 <script>
 export default {
   name: "Loading",
+  props: {},
+  data() {
+    return {};
+  },
 };
 </script>
 

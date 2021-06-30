@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Api(tags = "单词接口")
 @RestController
-@RequestMapping("/ve/word")
+@RequestMapping("/word")
 @CrossOrigin
 public class WordController {
     @Autowired

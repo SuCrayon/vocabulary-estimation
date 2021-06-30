@@ -26,7 +26,7 @@
 
 .buttons {
     position: absolute;
-    top: 80%;
+    /*top: 80%;*/
     left: 0;
     right: 0;
     display: flex;
@@ -49,7 +49,7 @@
     word-break: break-word;
     width: 100%;
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 45%;
     transform: translate(-45%, -45%);
     color: white;

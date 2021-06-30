@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Api(tags = "单词分类接口")
 @RestController
-@RequestMapping("/ve/word-category")
+@RequestMapping("/wordCategory")
 @CrossOrigin
 public class WordCategoryController {
     @Autowired

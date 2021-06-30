@@ -54,7 +54,7 @@ public class CodeGenerator {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("word", "word_category");
+        strategy.setInclude("user");
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         // strategy.setTablePrefix(""); //生成实体时去掉表前缀
 

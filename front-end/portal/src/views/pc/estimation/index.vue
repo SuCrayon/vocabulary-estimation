@@ -2,15 +2,15 @@
  * @Author: Crayon
  * @Date: 2021-06-24 21:49:38
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-26 10:29:41
+ * @LastEditTime: 2021-06-30 18:37:32
 -->
 <template>
   <div id="app-container">
-    <div id="main" v-loading="loading">
+    <div id="main" v-if="wordList.length > 0" v-loading="loading">
       <!-- 进度条 -->
       <el-progress
         :stroke-width="12"
-        :percentage="percentage"
+        :percentage="(index / wordList.length) * 100"
         :show-text="false"
       ></el-progress>
       <div class="wordtext">
@@ -22,13 +22,31 @@
         </div>
         <!-- 单词显示位置 -->
         <div id="word">
-          {{ showingWord }}
+          {{ wordList[index].word }}
+          <audio
+            :src="`https://dict.youdao.com/dictvoice?audio=${wordList[index].word}&type=1`"
+            autoplay
+          ></audio>
         </div>
-        <!-- 认识和不认识的按钮 -->
-        <div class="buttons">
-          <button class="bttn-float bttn-md" @click="update(true)">know</button>
-          <button class="bttn-float bttn-md" @click="update(false)">
-            unknow
+        <!-- 按钮 -->
+        <div
+          v-for="(option, idx) in wordList[index].options"
+          :key="idx"
+          style="text-align: center"
+          :style="{ top: `${60 + idx * 10}%` }"
+          class="buttons"
+        >
+          <button
+            style="
+              width: 75%;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            "
+            class="bttn-float bttn-md"
+            @click="selectOption(option)"
+          >
+            {{ option }}
           </button>
         </div>
       </div>
@@ -44,93 +62,58 @@ export default {
     return {
       loading: false, // 是否加载中
       index: 0, // 当前显示单词在单词列表的索引
-      wordList: [], // 单词列表
-      showingWord: "", // 当前应该显示的单词
-      percentage: 0,
+      wordList: [],
+      wordNums: [],
+      levelRightCounts: [],
     };
   },
   created() {
     this.getEstimationWords();
   },
   methods: {
-    getEstimationWords() {
+    nextWordOrCalc() {
+      if (this.index < this.wordList.length - 1) {
+        this.index++;
+      } else {
+        this.loading = true;
+        console.log(this.levelRightCounts);
+        estimationApi
+          .calculate(this.levelRightCounts)
+          .then((resp) => {
+            let result = resp.data.result;
+            this.$router.push({ name: "Result", params: { result } });
+          })
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.loading = false;
+          });
+      }
+    },
+    selectOption(option) {
+      // 答对
+      if (option === this.wordList[this.index].chMeaning) {
+        this.levelRightCounts[this.wordList[this.index].level - 1]++;
+      }
+      this.nextWordOrCalc();
+    },
+    async getEstimationWords() {
       this.loading = true;
-      estimationApi
+      await estimationApi
         .listEstimationWords()
         .then((resp) => {
-          this.wordList = resp.data.items;
-          this.showingWord = this.wordList[0].word;
+          this.wordList = resp.data.item.estimationWordList;
+          this.wordNums = resp.data.item.wordNums;
         })
         .catch((err) => console.log(err))
         .finally(() => {
-          this.loading = false;
+          // 2秒后加载完成
+          const loadingTimer = setInterval(() => {
+            this.loading = false;
+            clearInterval(loadingTimer);
+          }, 2000);
         });
-    },
-    updateShowingWord() {
-      // 索引没越界
-      if (this.index + 1 < this.wordList.length) {
-        // 更新显示下一个单词
-        this.showingWord = this.wordList[this.index + 1].word;
-        return this.index++;
-      }
-      return -1;
-    },
-    updatePercentage() {
-      // 计算百分比
-      this.percentage = (this.index / this.wordList.length) * 100;
-    },
-    update(flag) {
-      console.log(flag === true ? "know" : "unknow");
-      // 更新显示单词
-      let index = this.updateShowingWord();
-      // 没做完
-      if (index != -1) {
-        this.wordList[index].flag = flag;
-      } else {
-        this.wordList[this.index].flag = flag;
-        // 做完了
-        let result = this.estimate();
-        this.$router.push({ name: "Result", params: { result } });
-      }
-      // 更新进度条
-      this.updatePercentage();
-    },
-    estimate() {
-      let levelCounts = new Array(6).fill(0);
-      let levelRightCounts = new Array(6).fill(0);
-      // 统计各级别题目数以及各级别答对数
-      this.wordList.forEach((value) => {
-        // 认识
-        if (value.flag === true) {
-          levelRightCounts[value.level - 1]++;
-        }
-        levelCounts[value.level - 1]++;
-      });
-      console.log(levelCounts);
-      console.log(levelRightCounts);
-      const SCALE = 1500;
-      let result = 0;
-      // 计算每一个级别答对的比率
-      let rightRate = 0;
-      for (let i = 0; i < 6; i++) {
-        rightRate = levelRightCounts[i] / levelCounts[i];
-        if (i > 0) {
-          /* 
-            如果题目不属于第一级，则将上一级答对的比率和本级相乘
-            然后用这个比率乘以固定的预估值作为该级别的预估次数
-          */
-          let lastRightRate = levelRightCounts[i - 1] / levelCounts[i - 1];
-          if (lastRightRate === 0) {
-            lastRightRate = 0.1;
-          }
-          rightRate *= lastRightRate;
-        }
-        // 如果不是第一级，则将上一级答对的比率乘以预估值作为该级别的预估词数
-        console.log(`第${i + 1}级别: ${SCALE * rightRate}`);
-        result += SCALE * rightRate;
-      }
-      console.log("result: ", result);
-      return result;
+      // 初始化
+      this.levelRightCounts = new Array(this.wordNums.length).fill(0);
     },
   },
 };
