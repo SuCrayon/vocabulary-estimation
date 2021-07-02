@@ -12,3 +12,35 @@
     font-family: buttonfont;
     src: url(../font/Goodlight-Light.otf);
 }
+
+.el-message {
+    /* 适配手机端 */
+    min-width: 80vw;
+}
+
+.btn {
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    padding: 12px 8px;
+    box-sizing: border-box;
+}
+
+.btn.inline {
+    width: 20vw;
+}
+
+/* 按钮颜色仿造百词斩app */
+
+.btn.primary {
+    background-color: rgb(15, 75, 225);
+    color: #fff;
+}
+
+.btn.secondary {
+    background-color: rgb(220, 240, 250);
+    color: rgb(10, 50, 200);
+}

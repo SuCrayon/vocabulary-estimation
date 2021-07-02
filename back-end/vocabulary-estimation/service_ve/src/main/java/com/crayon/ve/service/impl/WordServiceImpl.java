@@ -88,6 +88,7 @@ public class WordServiceImpl extends ServiceImpl<WordMapper, Word> implements Wo
     public VocabularyEstimationVO listEstimationWords() {
         // 无需考虑容量问题
         List<EstimationWordDTO> estimationWordList = new LinkedList<>();
+        // TODO: 数据库单词的level和难度是负相关的（5最简单），后面改一下
         for (int i = 1; i <= Common.ESTIMATE_LEVEL_NUM; i++) {
             List<EstimationWordDTO> levelWordList = baseMapper.getRandomEstimationWords(i, Common.ESTIMATE_WORD_NUMS[i - 1]);
             estimationWordList.addAll(levelWordList);

@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-23 11:48:16
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-27 20:51:05
+ * @LastEditTime: 2021-07-02 22:39:49
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -39,7 +39,12 @@ const router = new Router({
     {
       path: '/m_result',
       name: 'M_Result',
-      component: (resolve) => require([/* webpackChunkName:'m_estimation'*/'@/views/mobile/result/index'], resolve)
+      component: (resolve) => require([/* webpackChunkName:'m_result'*/'@/views/mobile/result/index'], resolve)
+    },
+    {
+      path: '/m_wordBattleGame',
+      name: 'M_WordBattleGame',
+      component: (resolve) => require([/* webpackChunkName:'m_wordBattleGame'*/'@/views/mobile/word-battle-game/index'], resolve)
     }
   ]
 })
