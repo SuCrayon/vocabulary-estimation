@@ -17,7 +17,7 @@ public class BatchTest {
     private WordService wordService;
 
     public List<Integer> genOneList() {
-        int rightCount = 50; // 80%正确率
+        int rightCount = 40; // 20%正确率
         Random random = new Random();
         int tempCount = 0;
         ArrayList<Integer> levelRightCounts = new ArrayList<>(Common.ESTIMATE_LEVEL_NUM);
@@ -78,6 +78,6 @@ public class BatchTest {
         System.out.println("均值：" + average);
         System.out.println("方差：" + tempSum / (batchSize - 1));
         System.out.println("最小值：" + Collections.min(resultList));
-        System.out.println("最小值：" + Collections.max(resultList));
+        System.out.println("最大值：" + Collections.max(resultList));
     }
 }

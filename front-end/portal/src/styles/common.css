@@ -15,7 +15,7 @@
 
 .el-message {
     /* 适配手机端 */
-    min-width: 80vw;
+    min-width: 80vw !important;
 }
 
 .btn {
@@ -43,4 +43,9 @@
 .btn.secondary {
     background-color: rgb(220, 240, 250);
     color: rgb(10, 50, 200);
+}
+
+.btn.danger {
+    background-color: #e74c3c;
+    color: #fff;
 }

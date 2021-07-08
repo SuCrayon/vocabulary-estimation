@@ -2,7 +2,7 @@
  * @Author: Crayon
  * @Date: 2021-06-26 15:06:14
  * @Last Modified by: Crayon
- * @LastEditTime: 2021-06-30 18:29:07
+ * @LastEditTime: 2021-07-03 10:56:34
 -->
 <template>
   <div id="app-container">
@@ -32,8 +32,8 @@ export default {
   /* opacity: 0.8; */
 }
 .loading-gif {
-  width: 200px;
-  height: 200px;
+  width: 50vmin;
+  height: 50vmin;
   position: absolute;
   z-index: 999;
   top: 50%;

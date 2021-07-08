@@ -32,15 +32,14 @@ public class WordBattleController {
     public void onMessage(WordBattleTransFrame frame, Session session) throws IOException, EncodeException {
         System.out.println("收到消息：" + session.getId());
         Integer cmd = frame.getCmd();
-        session.getBasicRemote().sendObject(frame);
-        System.out.println(frame);
-//        if (cmd == 2) {
-//            // 开始匹配
-//            this.player.startMatch();
-//        } else if (cmd == 3) {
-//            // 取消匹配
-//            this.player.cancelMatch();
-//        } else {
+        if (cmd == 1) {
+            // 开始匹配
+            this.player.startMatch();
+        } else if (cmd == 2) {
+            // 取消匹配
+            this.player.cancelMatch();
+        }
+//        else {
 //            this.player.updateGameInfo("xxx");
 //        }
     }
