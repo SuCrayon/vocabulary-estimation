@@ -8,19 +8,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // 去除重复路由报错
-const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+// const originalPush = Router.prototype.push
+// Router.prototype.push = function push(location) {
+//   return originalPush.call(this, location).catch(err => err)
+// }
 
 Vue.use(Router)
 
 const router = new Router({
+  mode: "history",
   routes: [
-    {
-      path: '/',
-      redirect: '/estimation'
-    },
     {
       path: '/estimation',
       name: 'Estimation',
@@ -45,7 +42,14 @@ const router = new Router({
       path: '/m_wordBattleGame',
       name: 'M_WordBattleGame',
       component: (resolve) => require([/* webpackChunkName:'m_wordBattleGame'*/'@/views/mobile/word-battle-game/index'], resolve)
-    }
+    },
+
+
+
+    // {
+    //   path: '/',
+    //   redirect: '/estimation'
+    // },
   ]
 })
 

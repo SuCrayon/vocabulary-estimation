@@ -8,4 +8,4 @@ import router from './router'
 import { deviceDispatcher } from './utils/guardFunc'
 
 // 设备路由分发
-router.beforeEach(deviceDispatcher)
+// router.beforeEach(deviceDispatcher)

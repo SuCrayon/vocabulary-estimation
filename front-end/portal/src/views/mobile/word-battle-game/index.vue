@@ -7,14 +7,18 @@
 <template>
   <div id="app-container">
     <matching v-show="matching" :playerNum="playerNum" @cancel="cancelMatch" />
+    <div>{{ this.gameInfo.score.self }}</div>
+    <div>{{ this.gameInfo.word }}</div>
+    <div>{{ this.gameInfo.options }}</div>
   </div>
 </template>
 
 <script>
 import wordBattleGameApi from "@/api/wordBattleGame";
 export default {
+  name: "M_WordBattleGame",
   components: {
-    Matching: () => import("@/components/Matching/index"),
+    Matching: () => import("@/components/matching/index"),
   },
   data() {
     return {
@@ -24,8 +28,12 @@ export default {
         needNum: 0,
       },
       socket: {},
-      transFrame: {
-        cmd: 1,
+      gameInfo: {
+        score: {
+          self: 0
+        },
+        word: "",
+        options: []
       },
     };
   },
@@ -41,11 +49,14 @@ export default {
       this.socket.send(JSON.stringify(transFrame));
     },
     startMatch() {
-      this.sendMessage(this.transFrame);
+      this.sendMessage({
+        cmd: 1
+      });
     },
     cancelMatch() {
-      this.transFrame.cmd = 2;
-      this.sendMessage(this.transFrame);
+      this.sendMessage({
+        cmd: 2
+      });
     },
     socketInit() {
       this.socket = wordBattleGameApi.createConn();
@@ -73,10 +84,18 @@ export default {
     onMessage({ data }) {
       console.log(data);
       let resp = JSON.parse(data);
-      if (resp.description) {
-        this.$message.info(resp.description);
+      if (resp.cmd == 101) {
+        if (resp.description) {
+          this.$message.info(resp.description);
+        }
+        this.updatePlayerNum(resp);
+      } else if (resp.cmd == 103) {
+        this.matching = false;
+      } else if (resp.cmd == 104) {
+        this.gameInfo.score.self = resp.gameInfo.score.self;
+        this.gameInfo.word = resp.gameInfo.word;
+        this.gameInfo.options = resp.gameInfo.options;
       }
-      this.updatePlayerNum(resp);
     },
     onError() {},
   },
