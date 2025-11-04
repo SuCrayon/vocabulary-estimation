@@ -3,8 +3,9 @@ package com.crayon.ve.controller;
 import com.crayon.ve.POJO.DTO.WordBattleGamePlayer;
 import com.crayon.ve.coders.WebSocketDecoder;
 import com.crayon.ve.coders.WebSocketEncoder;
+import com.crayon.ve.constant.enumeration.WordBattleGameCmdEnum;
 import com.crayon.ve.entity.WordBattleTransFrame;
-import com.crayon.ve.service.impl.WordBattleGame;
+import com.crayon.ve.service.WordBattleGameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,11 +19,11 @@ import java.io.IOException;
 @Slf4j
 public class WordBattleController {
 
-    private static WordBattleGame wordBattleGame;
+    private static WordBattleGameService wordBattleGameService;
 
     @Autowired
-    public void setWordBattleGame(WordBattleGame wordBattleGame) {
-        WordBattleController.wordBattleGame = wordBattleGame;
+    public void setWordBattleGame(WordBattleGameService wordBattleGameService) {
+        WordBattleController.wordBattleGameService = wordBattleGameService;
     }
 
     private WordBattleGamePlayer player;
@@ -30,37 +31,36 @@ public class WordBattleController {
     @OnOpen
     public void onOpen(Session session) {
         this.player = new WordBattleGamePlayer(session);
-        System.out.println("新连接：" + session.getId());
+        log.info("session open, sessionId: {}", session.getId());
     }
 
     @OnClose
     public void onClose(Session session) {
-        wordBattleGame.playerLeave(player);
-        System.out.println("连接关闭：" + session.getId());
+        wordBattleGameService.playerLeave(player);
+        log.info("session close, sessionId: {}", session.getId());
     }
 
     @OnMessage
     public void onMessage(WordBattleTransFrame frame, Session session) throws IOException, EncodeException {
         System.out.println("收到消息：" + session.getId());
-        Integer cmd = frame.getCmd();
-        if (cmd == 1) {
+        WordBattleGameCmdEnum cmd = frame.getCmd();
+        if (WordBattleGameCmdEnum.PLAYER_START_MATCH.equals(cmd)) {
             // 开始匹配
-            wordBattleGame.playerJoin(player);
-        } else if (cmd == 2) {
+            log.info("player start match");
+            wordBattleGameService.playerJoin(player);
+        } else if (WordBattleGameCmdEnum.PLAYER_CANCEL_MATCH.equals(cmd)) {
             // 取消匹配
-
+            log.info("player cancel match");
+            wordBattleGameService.playerLeave(player);
+        } else {
+            log.warn("invalid cmd");
         }
-//        else {
-//            this.player.updateGameInfo("xxx");
-//        }
     }
 
     @OnError
     public void onError(Session session, Throwable error) {
-        // this.player.leave();
-        this.player.notifyPlayer("服务器错误，对局结束");
-        // System.out.println(session.getId() + "; 发生错误; 连接是否打开：" + session.isOpen());
-        log.error(error.getMessage(), error);
+        log.error("session error, sessionId: {}", session.getId(), error);
+        wordBattleGameService.playerLeave(player);
     }
 
 }

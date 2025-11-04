@@ -20,14 +20,14 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Slf4j
 public class WordBattleGameRoom implements Comparable<WordBattleGameRoom> {
-    private WordService wordService;
+    // 额定2个人就可以开始游戏
+    public static final int PLAYER_NUM = 2;
+
+    private final WordService wordService;
 
     public WordBattleGameRoom(WordService wordService) {
         this.wordService = wordService;
     }
-
-    // 额定2个人就可以开始游戏
-    public static final int PLAYER_NUM = 2;
 
     @Override
     public int compareTo(WordBattleGameRoom o) {

@@ -1,6 +1,7 @@
 package com.crayon.ve.entity;
 
 import com.crayon.ve.POJO.DTO.WordBattleGameRoom;
+import com.crayon.ve.constant.enumeration.WordBattleGameCmdEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -16,20 +17,8 @@ import java.util.Map;
 @Accessors(chain = true)
 @ApiModel(value = "WordBattleTransFrame对象", description = "单词对战长连接数据传输格式")
 public class WordBattleTransFrame {
-    /*
-    指令
-    1：开始匹配
-    2：取消匹配
-    3：对战时的用户选择
-
-    101：普通消息通知
-    102：用户加入/退出
-    103：游戏开始
-    104：单词
-    105：结束
-     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer cmd;
+    private WordBattleGameCmdEnum cmd;
 
     // 用户选择的答案，仅在cmd为3的时候有效
     @JsonInclude(JsonInclude.Include.NON_NULL)

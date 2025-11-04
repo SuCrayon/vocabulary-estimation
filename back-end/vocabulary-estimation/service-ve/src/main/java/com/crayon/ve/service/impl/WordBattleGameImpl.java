@@ -2,7 +2,7 @@ package com.crayon.ve.service.impl;
 
 import com.crayon.ve.POJO.DTO.WordBattleGamePlayer;
 import com.crayon.ve.POJO.DTO.WordBattleGameRoom;
-import com.crayon.ve.entity.WordBattleTransFrame;
+import com.crayon.ve.service.WordBattleGameService;
 import com.crayon.ve.service.WordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 @Component
 @Slf4j
-public class WordBattleGame {
+public class WordBattleGameImpl implements WordBattleGameService {
 
     @Autowired
     private WordService wordService;
@@ -288,7 +288,6 @@ public class WordBattleGame {
         prMap.remove(player);
         log.info("the player leaves the room, player: {}", player.getSession().getId());
     }
-
 
 
 }
